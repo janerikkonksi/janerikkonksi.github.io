@@ -32,11 +32,11 @@ function checkInput(inp) {
 //ENTER COORDINATES JS
 function enterCoordinates(latitude, longitude) {
     //https://epsg.io/4326
-    if (latitude > 180 || latitude < -180) {
+    if (latitude > 90 || latitude < -90) {
         document.getElementById("lat").style.borderColor = "red";
         cleanOutput();
         return false
-    } else if (longitude < -90 || longitude > 90) {
+    } else if (longitude < -180 || longitude > 180) {
         document.getElementById("lon").style.borderColor = "red";
         cleanOutput();
         return false
