@@ -1,0 +1,38 @@
+
+/* ENTER COORDINATES CSS */
+
+#badInput {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* moving a latitude input box */
+#lat {
+    margin-left: 14px;
+}
+
+/* MAP CSS */
+
+#mapid {
+    width: auto;
+    height: 450px;
+    position: relative;
+    outline: none;
+}
+
+/* INPUT BOX CSS */
+
+#headerButton {
+    padding: 20.3px 44px 18.7px 44px;
+    background-color: #fb2056;
+}
+
+#locationInput {
+    width:80%;
+}
+
+/* DATE INPUT CSS */
+#endDate {
+    margin-left: 6.3px;
+}

@@ -46,7 +46,7 @@ html{font-size:100%;}a,.page-title{color:#fb2056;}a:hover,a:focus{color:#fb2056;
 <link rel='stylesheet' id='elementor-pro-css'  href='https://janerikkonksi.github.io/wp-content/plugins/elementor-pro/assets/css/frontend.min.css?ver=2.9.2' media='all' />
 <link rel='stylesheet' id='font-awesome-5-all-css'  href='https://janerikkonksi.github.io/wp-content/plugins/elementor/assets/lib/font-awesome/css/all.min.css?ver=2.9.7' media='all' />
 <link rel='stylesheet' id='font-awesome-4-shim-css'  href='https://janerikkonksi.github.io/wp-content/plugins/elementor/assets/lib/font-awesome/css/v4-shims.min.css?ver=2.9.7' media='all' />
-<link rel='stylesheet' id='elementor-post-43-css'  href='https://janerikkonksi.github.io/wp-content/uploads/elementor/css/post-43.css?ver=1587331788' media='all' />
+<link rel='stylesheet' id='elementor-post-43-css'  href='https://janerikkonksi.github.io/wp-content/uploads/elementor/css/post-43.css?ver=1587414986' media='all' />
 <!--[if IE]>
 <script src='https://janerikkonksi.github.io/wp-content/themes/astra/assets/js/minified/flexibility.min.js?ver=2.3.4'></script>
 <script>
@@ -186,16 +186,16 @@ flexibility(document.documentElement);
 					<div class="elementor-widget-wrap">
 				<div class="elementor-element elementor-element-a534679 elementor-widget elementor-widget-html" data-id="a534679" data-element_type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
-			<head>
-    <style>
-        #headerButton {
-            padding: 20.3px 44px 18.7px 44px;
-            background-color: #fb2056;
-        }
-    </style>
+			<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="wp-content/themes/astra/assets/css/unminified/front-page.css">
+    <script src="wp-content/themes/astra/assets/js/unminified/front-page.js"></script>
 </head>
+<body>
+
 <div>
-    <input id="location" name="location" value="" type="text" placeholder="Enter a location" style="width:80%;">
+    <input id="locationInput" type="text" placeholder="Enter a location">
     <a onclick="addrSearch()" href="#myAnchor" class="elementor-button-link elementor-button elementor-size-sm"
        role="button" id="headerButton">
 	<span class="elementor-button-content-wrapper">
@@ -203,39 +203,8 @@ flexibility(document.documentElement);
     </a>
 </div>
 
-<script>
-    function addrSearch() {
-        var inp = document.getElementById("location").value;
-        if (!(checkNotEmpty(inp))) {
-            return false
-        }
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp;
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var myArr = JSON.parse(this.responseText);
-                var latLoc = myArr[0].lat;
-                var lonLoc = myArr[0].lon;
-                document.getElementById("lat").value = latLoc;
-                document.getElementById("lon").value = lonLoc;
-                myFunction(latLoc, lonLoc)
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-    }
-
-    function checkNotEmpty(inp) {
-        if (inp.length == 0) {
-            document.getElementById("location").style.borderColor = "red";
-            alert("Enter correct name");
-            return false;
-        }
-        document.getElementById("location").style.borderColor = "";
-        return true;
-    }
-</script>
-     		</div>
+</body>
+</html> 		</div>
 				</div>
 						</div>
 			</div>
@@ -294,18 +263,9 @@ flexibility(document.documentElement);
 			<!DOCTYPE html>
 <html>
 <head>
-    <style>
-        #output {
-            color: red;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        #lat {
-            margin-left: 14px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="wp-content/themes/astra/assets/css/unminified/front-page.css">
+    <script src="wp-content/themes/astra/assets/js/unminified/front-page.js"></script>
 </head>
-
 <body>
 
 <div>
@@ -313,69 +273,15 @@ flexibility(document.documentElement);
     longitude: <input type="text" id="lon" value="-0.12"><br><br>
 </div>
 
-<button onclick="myFunction(document.getElementById('lat').value,document.getElementById('lon').value)">Find out
+<button onclick="enterCoordinates(document.getElementById('lat').value,document.getElementById('lon').value)">Find out
 </button>
 
-<p id="output"></p>
+<p id="badInput"></p>
 <div>
-    Sunrise: <b id="tõus"></b><br>
-    Sunset: <b id="langus"></b><br>
-    Length: <b id="pikkus"></b><br>
+    Sunrise: <b id="sunrise"></b><br>
+    Sunset: <b id="sunset"></b><br>
+    Length: <b id="length"></b><br>
 </div>
-
-
-<script>
-
-    function myFunction(latitude, longitude) {
-        //https://epsg.io/4326
-        if (latitude > 180 || latitude < -180) {
-            document.getElementById("lat").style.borderColor = "red";
-            cleanOutput();
-            return false
-        } else if (longitude < -90 || longitude > 90) {
-            document.getElementById("lon").style.borderColor = "red";
-            cleanOutput();
-            return false
-        } else {
-            document.getElementById("output").innerHTML = "";
-            document.getElementById("lat").style.borderColor = "";
-            document.getElementById("lon").style.borderColor = "";
-        }
-        var valjund = "https://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude;
-        updateMap();
-        httpGet(valjund)
-    }
-
-    function cleanOutput() {
-        document.getElementById("output").innerHTML = "Inappropriate input";
-        document.getElementById("tõus").innerHTML = "-";
-        document.getElementById("langus").innerHTML = "-";
-        document.getElementById("pikkus").innerHTML = "-"
-    }
-
-    function createDiv(responsetext) {
-        var result = JSON.parse(responsetext);
-        var split = result.results.day_length.split(":");
-        document.getElementById("tõus").innerHTML = result.results.sunrise;
-        document.getElementById("langus").innerHTML = result.results.sunset;
-        document.getElementById("pikkus").innerHTML = split[0] + " hours and " + split[1] + " minutes";
-    }
-
-    function httpGet(theUrl) {
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {// code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                createDiv(xmlhttp.responseText);
-            }
-        };
-        xmlhttp.open("GET", theUrl, false);
-        xmlhttp.send();
-    }
-</script>
 
 </body>
 </html>
@@ -400,54 +306,18 @@ flexibility(document.documentElement);
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin=""/>
+    <link rel="stylesheet" type="text/css" href="wp-content/themes/astra/assets/css/unminified/front-page.css">
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
             integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-            crossorigin=""></script>
+            crossorigin="">
+
+    </script>
+    <script src="wp-content/themes/astra/assets/js/unminified/front-page.js">
+    </script>
 </head>
 <body>
 
-<div id="mapid" style="width: auto; height: 450px; position: relative; outline: none;"
-     class="leaflet-container leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag" tabindex="0"></div>
-
-    <script>
-        var lon = document.getElementById('lon').value;
-        var lat = document.getElementById('lat').value;
-        var mymap = L.map('mapid').setView([lat, lon], 13);
-        var marker = L.marker([lat, lon]).addTo(mymap);
-        
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1
-        }).addTo(mymap);
-
-
-        function onMapClick(e) {
-            marker
-                .setLatLng(e.latlng)
-                .bindPopup("<b>Choosed spot:</b><br>" + e.latlng.toString())
-                .openPopup();
-            mymap.setView(e.latlng);
-            var latMap = e.latlng.lat;
-            var lonMap = e.latlng.lng;
-            document.getElementById("lat").value = latMap;
-            document.getElementById("lon").value = lonMap;
-        }
-
-        mymap.on('click', onMapClick);
-
-        function updateMap() {
-            lon = document.getElementById('lon').value;
-            lat = document.getElementById('lat').value;
-            var p = new L.LatLng(lat, lon);
-            marker.setLatLng(p);
-            mymap.setView(p);
-        }
-    </script>
+<div id="mapid"></div>
 
 </body>
 </html>
@@ -489,81 +359,28 @@ flexibility(document.documentElement);
 				</div>
 				<div class="elementor-element elementor-element-0dc4afa elementor-widget elementor-widget-html" data-id="0dc4afa" data-element_type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
-			<head>
-    <style>
-        #end {
-            margin-left: 6.3px;
-        }
-    </style>
+			<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="wp-content/themes/astra/assets/css/unminified/front-page.css">
+    <script src="wp-content/themes/assets/js/unminified/front-page.js"></script>
 </head>
-
+<body>
 <div>
     Choose startdate:
-    <input type="date" id="start" name="trip-start"
+    <input type="date" id="startDate"
            value="2018-06-20"><br>
     Choose enddate:
-    <input type="date" id="end" name="trip-end"
+    <input type="date" id="endDate"
            value="2018-06-24">
-</div><br>
-<button onclick="checkDate(document.getElementById('start').value,document.getElementById('end').value)">Find out
+</div>
+<br>
+<button onclick="checkDate(document.getElementById('startDate').value,document.getElementById('endDate').value)">Find
+    out
 </button>
 
-
-<script>
-
-    function checkDate(startDate, endDate) {
-        var dateTime1 = new Date(startDate).getTime();
-        var dateTime2 = new Date(endDate).getTime();
-        var diff = dateTime2 - dateTime1;
-        if (diff < 0) {
-            alert("endDate must be greater than startDate");
-            return false;
-        } else {
-            var dateList = getDatesRange(startDate, endDate);
-            var durationList = findAllLengths(dateList);
-            drawNewPlot(dateList, durationList)
-        }
-    }
-
-    function parseWeb(day) {
-        var latitude = document.getElementById('lat').value;
-        var longitude = document.getElementById('lon').value;
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=" + day;
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-            }
-        };
-        xmlhttp.open("GET", url, false);
-        xmlhttp.send();
-        return JSON.parse(xmlhttp.responseText).results.day_length;
-    }
-
-    function findAllLengths(dayList) {
-        var dayLength = [];
-        for (i = 0; i < dayList.length; i++) {
-            var pieces = parseWeb(dayList[i]).split(":");
-            var all = (parseInt(pieces[0]) * 60) + parseInt(pieces[1]) + (parseInt(pieces[2]) / 60);
-            dayLength.push(all);
-        }
-        return dayLength;
-    }
-
-    function getDatesRange(startDate, endDate) {
-        var Days = [];
-        var dateMove = new Date(startDate);
-        var strDate = startDate;
-
-        while (strDate < endDate) {
-            var strDate = dateMove.toISOString().slice(0, 10);
-            Days.push(strDate);
-            dateMove.setDate(dateMove.getDate() + 1);
-        }
-        return Days;
-    }
-
-
-</script>		</div>
+</body>
+</html>		</div>
 				</div>
 				<div class="elementor-element elementor-element-b619695 elementor-widget elementor-widget-text-editor" data-id="b619695" data-element_type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
@@ -579,9 +396,12 @@ flexibility(document.documentElement);
 					<div class="elementor-widget-wrap">
 				<div class="elementor-element elementor-element-b134988 elementor-widget elementor-widget-html" data-id="b134988" data-element_type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
-			<head>
+			<!DOCTYPE html>
+<html>
+<head>
     <!-- Load plotly.js into the DOM -->
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src="wp-content/themes/astra/assets/js/unminified/front-page.js"></script>
 </head>
 
 <body>
@@ -589,10 +409,11 @@ flexibility(document.documentElement);
 <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
 
 <script>
+    //When the page is loaded, this will be shown, just example data
     var data = [
         {
-            x: ['2018-06-20','2018-06-21','2018-06-22','2018-06-23','2018-06-24'],
-            y: [998.45,998.45,998.34,998.11,997.81],
+            x: ['2018-06-20', '2018-06-21', '2018-06-22', '2018-06-23', '2018-06-24'],
+            y: [998.45, 998.45, 998.34, 998.11, 997.81],
             type: 'scatter'
         }
     ];
@@ -607,32 +428,9 @@ flexibility(document.documentElement);
     };
 
     Plotly.newPlot('myDiv', data, layout);
-
-
-    function drawNewPlot(dateList, durationList) {
-        var data = [
-            {
-                x: dateList,
-                y: durationList,
-                type: 'scatter'
-            }
-        ];
-        var layout = {
-            title: 'Day duration change',
-            xaxis: {
-                title: 'Dates',
-            },
-            yaxis: {
-                title: 'Length of the day (minutes)',
-            }
-        };
-
-        Plotly.newPlot('myDiv', data, layout);
-    }
-
 </script>
 </body>
-		</div>
+</html>		</div>
 				</div>
 				<div class="elementor-element elementor-element-fee14a3 elementor-widget elementor-widget-text-editor" data-id="fee14a3" data-element_type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
@@ -672,7 +470,7 @@ flexibility(document.documentElement);
 				</div>
 				<div class="elementor-element elementor-element-c07d6ad elementor-widget elementor-widget-text-editor" data-id="c07d6ad" data-element_type="widget" data-widget_type="text-editor.default">
 				<div class="elementor-widget-container">
-					<div class="elementor-text-editor elementor-clearfix"><p>This project was made by Jan Erik Konksi. </p></div>
+					<div class="elementor-text-editor elementor-clearfix"><p>This project was made by Jan Erik Konksi. My initial idea was to do the project in Django, but I decided to try something very different &#8211; WordPress + js (and a bit of HTML and CSS). I decided to do so because earlier I had this other trial work that I decided to do very thoroughly and I didn&#8217;t finish it in time. Basically, I had nothing to show. This time my purpose was to create MVP (<em>minimum viable product) </em>that is usable, has some design and I even made it to mobile/tablet responsive. If the project had been something more complex, I wouldn&#8217;t have done that in WP, but I think this time it was ok &#8211; right tools for every solution.</p></div>
 				</div>
 				</div>
 						</div>
@@ -742,7 +540,7 @@ flexibility(document.documentElement);
 	<span class="screen-reader-text">Scroll to Top</span>
 </a>
 <script>
-var astra = {"break_point":"921","isRtl":"","query_vars":"[]","edit_post_url":"https:\/\/janerikkonksi.github.io\/wp-admin\/post.php?post={{id}}&action=edit","ajax_url":"https:\/\/janerikkonksi.github.io\/wp-admin\/admin-ajax.php","infinite_count":"2","infinite_total":"0","pagination":"number","infinite_scroll_event":"scroll","infinite_nonce":"7db009d00b","no_more_post_message":"No more posts to show.","grid_layout":"1","site_url":"https:\/\/janerikkonksi.github.io","show_comments":"Show Comments","masonryEnabled":"","blogMasonryBreakPoint":"768"};
+var astra = {"break_point":"921","isRtl":"","query_vars":"[]","edit_post_url":"https:\/\/janerikkonksi.github.io\/wp-admin\/post.php?post={{id}}&action=edit","ajax_url":"https:\/\/janerikkonksi.github.io\/wp-admin\/admin-ajax.php","infinite_count":"2","infinite_total":"0","pagination":"number","infinite_scroll_event":"scroll","infinite_nonce":"6199064748","no_more_post_message":"No more posts to show.","grid_layout":"1","site_url":"https:\/\/janerikkonksi.github.io","show_comments":"Show Comments","masonryEnabled":"","blogMasonryBreakPoint":"768"};
 </script>
 <script src='https://janerikkonksi.github.io/wp-content/themes/astra/assets/js/minified/style.min.js?ver=2.3.4'></script>
 <script>
@@ -753,7 +551,7 @@ var astraAddon = {"sticky_active":"","header_main_stick":"0","header_above_stick
 <script src='https://janerikkonksi.github.io/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=2.9.7'></script>
 <script src='https://janerikkonksi.github.io/wp-content/plugins/elementor-pro/assets/lib/sticky/jquery.sticky.min.js?ver=2.9.2'></script>
 <script>
-var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/janerikkonksi.github.io\/wp-admin\/admin-ajax.php","nonce":"3bf66afad0","i18n":{"toc_no_headings_found":"No headings were found on this page."},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"google":{"title":"Google+","has_counter":true},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"delicious":{"title":"Delicious"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"}},"facebook_sdk":{"lang":"en_US","app_id":""}};
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/janerikkonksi.github.io\/wp-admin\/admin-ajax.php","nonce":"21b41c0382","i18n":{"toc_no_headings_found":"No headings were found on this page."},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"google":{"title":"Google+","has_counter":true},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"delicious":{"title":"Delicious"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"}},"facebook_sdk":{"lang":"en_US","app_id":""}};
 </script>
 <script src='https://janerikkonksi.github.io/wp-content/plugins/elementor-pro/assets/js/frontend.min.js?ver=2.9.2'></script>
 <script src='https://janerikkonksi.github.io/wp-includes/js/jquery/ui/position.min.js?ver=1.11.4'></script>
